@@ -62,7 +62,7 @@ function backup_operation {
 		export exit_status=${exit_state}
 		echo "Error detected, operation exited: "${exit_state}
 	fi
-	echo ${s3_bucket_path}" " ${date_today}" " ${timestamp}" "${exit_status} >> /s3-mount/${s3_bucket_path}/tar-incremental/${s3_bucket_path}.log
+	echo ${s3_bucket_path}" " ${date_today}" " ${timestamp}" "${exit_status} >> /s3-mount/${s3_bucket_path}/tar-incremental/${date_today}/${date_today}/}${s3_bucket_path}.log
 
 }
 
