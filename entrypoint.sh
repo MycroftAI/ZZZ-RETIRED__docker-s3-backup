@@ -31,7 +31,9 @@ function backup_operation {
 	export date_today=$(date +%m_%d_%y)
         mkdir -p /s3-mount/${s3_bucket_path}/tar-incremental/${date_today}/
 	tar_command='tar
-        --no-check-device	
+        --no-check-device
+        --owner=0
+        --group=0	
 	--exclude='"${backup_dir}"'/sys 
 	--exclude='"${backup_dir}"'/proc 
 	--exclude='"${backup_dir}"'/dev 
