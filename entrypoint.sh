@@ -73,10 +73,15 @@ function backup_operation {
 }
 
 function log_add_self_to_host_list {
-	cat /s3-mount/backup-hosts > temp-hosts
-	sed -i '/'${s3_bucket_path}'/d' temp-hosts
-	echo ${s3_bucket_path} >> temp-hosts
-	cat temp-hosts > s3-mount/backup-hosts
+	# something went wrong here
+	#cat /s3-mount/backup-hosts > temp-hosts
+	#sed -i '/'${s3_bucket_path}'/d' temp-hosts
+	#echo ${s3_bucket_path} >> temp-hosts
+	#cat temp-hosts > s3-mount/backup-hosts
+	mkdir -p /s3-mount/backup-hosts
+	if [ ! -f /s3-mount/backup-hosts/${s3_bucket_path} ]; then
+		touch /s3-mount/backup-hosts/${s3_bucket_path}
+	fi
 }
 
 echo ${s3_bucket_path}
