@@ -52,7 +52,10 @@ function backup_operation {
 	--exclude='"${backup_dir}"'/var/lib/ntp 
 	--exclude='"${backup_dir}"'/var/lib/lxcfs 
 	--exclude='"${backup_dir}"'/var/log 
-	--exclude='"${backup_dir}"'/usr/src 
+	--exclude='"${backup_dir}"'/usr/src
+        --exclude='"${backup_dir}"'/var/lib/fail2ban
+	--exclude='"${backup_dir}"'/var/lib/lxd
+	--exclude='"${backup_dir}"'/var/discourse/shared/standalone/postgres_run
 	--listed-incremental=/s3-mount/'${s3_bucket_path}'/tar-incremental/'${date_today}'/usr.snar 
 	-vjc '"${backup_dir}"' -f /s3-mount/'${s3_bucket_path}'/tar-incremental/'${date_today}'/archive-'${timestamp}'.tar.xz'
 	echo $tar_command
