@@ -57,7 +57,8 @@ function backup_operation {
 	--exclude='"${backup_dir}"'/var/lib/lxd
 	--exclude='"${backup_dir}"'/var/discourse/shared/standalone/postgres_run
 	--listed-incremental=/s3-mount/'${s3_bucket_path}'/tar-incremental/'${date_today}'/usr.snar 
-	-vjc '"${backup_dir}"' -f /s3-mount/'${s3_bucket_path}'/tar-incremental/'${date_today}'/archive-'${timestamp}'.tar.xz'
+	-I pxz
+	-c '"${backup_dir}"' -f /s3-mount/'${s3_bucket_path}'/tar-incremental/'${date_today}'/archive-'${timestamp}'.tar.xz'
 	echo $tar_command
 	$tar_command 2>&1 | tee > /tmp/tar_log ; exit_state=${PIPESTATUS[0]}
 	if [[ (${exit_state} == 0) ]]
