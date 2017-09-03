@@ -65,9 +65,11 @@ function backup_operation {
 	then
 		export exit_status=0
 		echo "No errors detected, operation succesful"
+		curl -i -X POST -d 'payload={"text": ":white_check_mark: Backup to s3 succesful for host: '"${s3_bucket_path}"'"}' https://chat.mycroft.ai/hooks/bbutxxwu8fgm8cqa6wh6eaq7ze
 	else
 		export exit_status=${exit_state}
 		echo "Error detected, operation exited: "${exit_state}
+		curl -i -X POST -d 'payload={"text": ":x: Backup to s3 failed for host: '"${s3_bucket_path}"' with exit status '"${exit_state}"'" }' https://chat.mycroft.ai/hooks/bbutxxwu8fgm8cqa6wh6eaq7ze
 	fi
 	echo ${s3_bucket_path}" " ${date_today}" " ${timestamp}" "${exit_status} >> /s3-mount/${s3_bucket_path}/tar-incremental/${date_today}/${date_today}-${s3_bucket_path}.log
 

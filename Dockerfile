@@ -4,7 +4,8 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
     s3fs \
-    pxz
+    pxz \
+    curl
 
 RUN rm -rf /var/lib/apt/lists/*
 
