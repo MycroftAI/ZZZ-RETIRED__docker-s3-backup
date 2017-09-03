@@ -65,11 +65,14 @@ function backup_operation {
 	then
 		export exit_status=0
 		echo "No errors detected, operation succesful"
+		export EMAIL_SUBJECT="Backup to s3 succesful for host: '"${s3_bucket_path}"'"
+		export EMAIL_BODY=${EMAIL_SUBJECT}
 		curl -i -X POST -d 'payload={"text": ":white_check_mark: Backup to s3 succesful for host: '"${s3_bucket_path}"'"}' https://chat.mycroft.ai/hooks/bbutxxwu8fgm8cqa6wh6eaq7ze
+		$(python mailer.py)
 	else
 		export exit_status=${exit_state}
 		echo "Error detected, operation exited: "${exit_state}
-		curl -i -X POST -d 'payload={"text": ":x: Backup to s3 failed for host: '"${s3_bucket_path}"' with exit status '"${exit_state}"'" }' https://chat.mycroft.ai/hooks/bbutxxwu8fgm8cqa6wh6eaq7ze
+		curl -i -X POST -d 'payload={"text": "@here :x: Backup to s3 failed for host: '"${s3_bucket_path}"' with exit status '"${exit_state}"'" }' https://chat.mycroft.ai/hooks/bbutxxwu8fgm8cqa6wh6eaq7ze
 	fi
 	echo ${s3_bucket_path}" " ${date_today}" " ${timestamp}" "${exit_status} >> /s3-mount/${s3_bucket_path}/tar-incremental/${date_today}/${date_today}-${s3_bucket_path}.log
 
@@ -89,7 +92,7 @@ function log_add_self_to_host_list {
 
 echo ${s3_bucket_path}
 echo ${backup_dir}
-
+source ./sendgrid.env
 create_s3fs_password_file
 mount_s3_bucket
 log_add_self_to_host_list
@@ -98,6 +101,9 @@ backup_operation
 if [[ !(${exit_status} == 0) ]];
 then
 	cat /tmp/tar_log  > /s3-mount/${s3_bucket_path}/tar-incremental/${date_today}/archive-${timestamp}.error.log
+	export EMAIL_SUBJECT="Backup to s3 failed for host: '"${s3_bucket_path}"' with exit status '"${exit_state}"'"
+	export EMAIL_BODY=$(cat /s3-mount/${s3_bucket_path}/tar-incremental/${date_today}/archive-${timestamp}.error.log )
+	$(python mailer.py)
 fi
 
 
