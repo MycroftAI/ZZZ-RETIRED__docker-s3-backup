@@ -73,7 +73,7 @@ function backup_operation {
 	else
 		export exit_status=${exit_state}
 		echo "Error detected, operation exited: "${exit_state}
-		curl -i -X POST -d 'payload={"text": "@here :x: Backup to s3 failed for host: '"${s3_bucket_path}"' with exit status '"${exit_state}"'" }' https://chat.mycroft.ai/hooks/bbutxxwu8fgm8cqa6wh6eaq7ze
+		curl -i -X POST -d 'payload={"text": ":x: Backup to s3 failed for host: '"${s3_bucket_path}"' with exit status '"${exit_state}"'" }' https://chat.mycroft.ai/hooks/bbutxxwu8fgm8cqa6wh6eaq7ze
 		curl -H "Content-Type: application/json" -X POST -d '{"hostname":"'${s3_bucket_path}'", "desc":"description coming soon!", "time": "'${timestamp}'", "success":"1"}' http://138.197.101.122:9898/nodes
 	fi
 	echo ${s3_bucket_path}" " ${date_today}" " ${timestamp}" "${exit_status} >> /s3-mount/${s3_bucket_path}/tar-incremental/${date_today}/${date_today}-${s3_bucket_path}.log
