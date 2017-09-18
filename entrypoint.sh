@@ -69,7 +69,7 @@ function backup_operation {
 		export EMAIL_SUBJECT="Backup to s3 succesful for host: '"${s3_bucket_path}"'"
 		export EMAIL_BODY=${EMAIL_SUBJECT}
 		curl -i -X POST -d 'payload={"text": ":white_check_mark: Backup to s3 succesful for host: '"${s3_bucket_path}"'"}' https://chat.mycroft.ai/hooks/bbutxxwu8fgm8cqa6wh6eaq7ze
-		$(python mailer.py)
+		#$(python mailer.py)
 		 curl -H "Content-Type: application/json" -X POST -d '{"hostname":"'${s3_bucket_path}'", "desc":"description coming soon!", "time": "'${timestamp}'", "success":"0"}' http://138.197.101.122:9898/nodes
 	else
 		export exit_status=${exit_state}
@@ -106,7 +106,7 @@ then
 	cat /tmp/tar_log  > /s3-mount/${s3_bucket_path}/tar-incremental/${date_today}/archive-${timestamp}.error.log
 	export EMAIL_SUBJECT="Backup to s3 failed for host: '"${s3_bucket_path}"' with exit status '"${exit_state}"'"
 	export EMAIL_BODY=$(cat /s3-mount/${s3_bucket_path}/tar-incremental/${date_today}/archive-${timestamp}.error.log )
-	$(python mailer.py)
+	#$(python mailer.py)
 fi
 
 
